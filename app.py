@@ -60,15 +60,24 @@ col1, col2 = st.columns(2)
 col1.metric("Total Global Sales (Millions)", f"{total_sales:.2f}")
 col2.metric("Number of Games", num_games)
 
-st.markdown("""
+top_genre = (
+    filtered_df.groupby("genre")["total_sales"]
+    .sum()
+    .idxmax()
+)
+
+top_region = filtered_df[["na_sales", "pal_sales", "jp_sales"]].sum().idxmax()
+
+st.markdown(f"""
 ## 📊 Key Insights
-- 🎮 Action games dominate global sales
-- 🌍 Japan prefers RPGs significantly more than other regions
-- 📉 Sales declined after 2010 due to market saturation
+- 🎮 Top Genre: **{top_genre}**
+- 🌍 Strongest Market: **{top_region.upper()}**
+- 📅 Total Games Analyzed: **{num_games}**
 """)
+st.markdown("---")
 
 # 📈 Ventas en el tiempo
-st.subheader("Sales Trend Over Time")
+st.header("Sales Trend Over Time")
 
 sales_trend = (
     filtered_df.groupby("year")["total_sales"]
@@ -78,14 +87,21 @@ sales_trend = (
 
 fig = px.line(sales_trend, x="year", y="total_sales", title="Global Sales Over Time")
 st.plotly_chart(fig, use_container_width=True)
+st.markdown("---")
 
 # TOP 5 Juegos
-st.subheader("TOP 5 Games")
+st.header("TOP 5 Games")
 
-fig1 =  st.write(filtered_df[["title", "console", "total_sales"]].head(5))
+top_games = (
+    filtered_df.sort_values(by="total_sales", ascending=False)
+    [["title", "console", "total_sales"]]
+    .head(5)
+)
+
+st.dataframe(top_games)
 
 # 🌍 Ventas por región
-st.subheader("Regional Sales Comparison")
+st.header("Regional Sales Comparison")
 
 regional_sales = filtered_df[["na_sales", "pal_sales", "jp_sales", "other_sales"]].sum()
 regional_df = regional_sales.reset_index()
@@ -93,9 +109,10 @@ regional_df.columns = ["region", "sales"]
 
 fig2 = px.bar(regional_df, x="region", y="sales", title="Sales by Region")
 st.plotly_chart(fig2, use_container_width=True)
+st.markdown("---")
 
 # 🏆 Top publishers
-st.subheader("Top Publishers")
+st.header("Top Publishers")
 
 top_publishers = (
     filtered_df.groupby("publisher")["total_sales"]
@@ -107,9 +124,25 @@ top_publishers = (
 
 fig3 = px.bar(top_publishers, x="publisher", y="total_sales", title="Top Publishers")
 st.plotly_chart(fig3, use_container_width=True)
+st.markdown("---")
+
+# 🏆 Top Developers
+st.header("Top Developers")
+
+top_dev = (
+    filtered_df.groupby("developer")["total_sales"]
+    .sum()
+    .sort_values(ascending=False)
+    .head(10)
+    .reset_index()
+)
+
+fig_dev = px.bar(top_dev, x="developer", y="total_sales")
+st.plotly_chart(fig_dev, use_container_width=True)
+st.markdown("---")
 
 # 🎮 Top consolas
-st.subheader("Top Consoles")
+st.header("Top Consoles")
 
 top_consoles = (
     filtered_df.groupby("console")["total_sales"]
@@ -121,9 +154,10 @@ top_consoles = (
 
 fig4 = px.bar(top_consoles, x="console", y="total_sales", title="Top Consoles")
 st.plotly_chart(fig4, use_container_width=True)
+st.markdown("---")
 
 # ⭐ Critic Score vs Sales
-st.subheader("Critic Score vs Sales")
+st.header("Critic Score vs Sales")
 
 fig5 = px.scatter(
     filtered_df,
@@ -134,10 +168,11 @@ fig5 = px.scatter(
 )
 
 st.plotly_chart(fig5, use_container_width=True)
+st.markdown("---")
 
 # 🔍 Buscador de juegos
 
-st.subheader("🔍 Search Game")
+st.header("🔍 Search Game")
 
 search = st.text_input("Type a game title")
 
