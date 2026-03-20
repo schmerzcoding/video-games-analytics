@@ -27,14 +27,16 @@ df = load_data()
 def build_recommender(df):
     df_model = df[["title", "genre", "console"]].dropna()
 
-    encoder = OneHotEncoder(handle_unknown='ignore')
+    # 🔥 LIMITAR tamaño (CLAVE)
+    if len(df_model) > 3000:
+        df_model = df_model.sample(3000, random_state=42)
+
+    encoder = OneHotEncoder(handle_unknown='ignore', sparse_output=False)
     features = encoder.fit_transform(df_model[["genre", "console"]])
 
     similarity = cosine_similarity(features)
 
     return df_model.reset_index(drop=True), similarity
-
-df_model, similarity_matrix = build_recommender(df)
 
 st.title("🎮 Video Game Market Intelligence Dashboard")
 
