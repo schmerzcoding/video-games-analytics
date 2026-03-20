@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.preprocessing import OneHotEncoder
 
 # Configuración de página
 st.set_page_config(page_title="Video Game Dashboard", layout="wide")
@@ -20,8 +22,6 @@ def load_data():
     return df
 
 df = load_data()
-from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.preprocessing import OneHotEncoder
 
 @st.cache_data
 def build_recommender(df):
