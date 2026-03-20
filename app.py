@@ -211,7 +211,7 @@ if search:
             st.write(f"💰 Sales: {row['total_sales']}M")
 
         st.markdown("---")
-        
+
 st.header("🧠 Game Recommendation System")
 
 selected_game = st.selectbox(
@@ -227,7 +227,11 @@ if selected_game:
 
     recommendations = [df_model.iloc[i[0]]["title"] for i in scores]
 
-    st.subheader("🎯 Recommended Games")
+st.subheader("🎯 Recommended Games")
 
-    for game in recommendations:
-        st.write(f"👉 {game}")
+cols = st.columns(5)
+
+for i, game in enumerate(recommendations):
+     with cols[i]:
+        st.image("https://www.pngall.com/wp-content/uploads/15/Video-Game-Controller-PNG-Pic.png")
+        st.write(game)
