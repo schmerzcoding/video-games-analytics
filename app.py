@@ -141,7 +141,7 @@ if search:
         col1, col2 = st.columns([1, 3])
 
         with col1:
-            st.image("games\generic.png", width=120)
+            st.image("https://www.pngall.com/wp-content/uploads/15/Video-Game-Controller-PNG-Pic.png", width=120)
 
         with col2:
             st.markdown(f"### {row['title']}")
