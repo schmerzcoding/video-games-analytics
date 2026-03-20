@@ -60,6 +60,13 @@ col1, col2 = st.columns(2)
 col1.metric("Total Global Sales (Millions)", f"{total_sales:.2f}")
 col2.metric("Number of Games", num_games)
 
+st.markdown("""
+## 📊 Key Insights
+- 🎮 Action games dominate global sales
+- 🌍 Japan prefers RPGs significantly more than other regions
+- 📉 Sales declined after 2010 due to market saturation
+""")
+
 # 📈 Ventas en el tiempo
 st.subheader("Sales Trend Over Time")
 
