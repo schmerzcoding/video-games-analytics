@@ -21,6 +21,22 @@ def load_data():
 
 df = load_data()
 
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.preprocessing import OneHotEncoder
+
+@st.cache_data
+def build_recommender(df):
+    df_model = df[["title", "genre", "console"]].dropna()
+
+    encoder = OneHotEncoder()
+    features = encoder.fit_transform(df_model[["genre", "console"]])
+
+    similarity = cosine_similarity(features)
+
+    return df_model.reset_index(drop=True), similarity
+
+df_model, similarity_matrix = build_recommender(df)
+
 st.title("🎮 Video Game Market Intelligence Dashboard")
 
 # Sidebar filtros
@@ -195,3 +211,23 @@ if search:
             st.write(f"💰 Sales: {row['total_sales']}M")
 
         st.markdown("---")
+        
+st.header("🧠 Game Recommendation System")
+
+selected_game = st.selectbox(
+    "Choose a game you like",
+    df_model["title"].unique()
+)
+
+if selected_game:
+    idx = df_model[df_model["title"] == selected_game].index[0]
+
+    scores = list(enumerate(similarity_matrix[idx]))
+    scores = sorted(scores, key=lambda x: x[1], reverse=True)[1:6]
+
+    recommendations = [df_model.iloc[i[0]]["title"] for i in scores]
+
+    st.subheader("🎯 Recommended Games")
+
+    for game in recommendations:
+        st.write(f"👉 {game}")
