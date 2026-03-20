@@ -215,6 +215,7 @@ if search:
 
 st.header("🧠 Game Recommendation System")
 
+df_model, similarity_matrix = build_recommender(df)
 selected_game = st.selectbox(
     "Choose a game you like",
     df_model["title"].unique()
