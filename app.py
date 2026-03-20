@@ -20,14 +20,14 @@ def load_data():
     return df
 
 df = load_data()
-
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import OneHotEncoder
 
+@st.cache_data
 def build_recommender(df):
     df_model = df[["title", "genre", "console"]].dropna()
 
-    encoder = OneHotEncoder()
+    encoder = OneHotEncoder(handle_unknown='ignore')
     features = encoder.fit_transform(df_model[["genre", "console"]])
 
     similarity = cosine_similarity(features)
