@@ -24,7 +24,6 @@ df = load_data()
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import OneHotEncoder
 
-@st.cache_data
 def build_recommender(df):
     df_model = df[["title", "genre", "console"]].dropna()
 
