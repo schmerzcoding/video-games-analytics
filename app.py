@@ -227,11 +227,11 @@ if selected_game:
 
     recommendations = [df_model.iloc[i[0]]["title"] for i in scores]
 
-st.subheader("🎯 Recommended Games")
+    st.subheader("🎯 Recommended Games")
 
-cols = st.columns(5)
+    cols = st.columns(5)
 
-for i, game in enumerate(recommendations):
-     with cols[i]:
-        st.image("https://www.pngall.com/wp-content/uploads/15/Video-Game-Controller-PNG-Pic.png")
-        st.write(game)
+    for i, game in enumerate(recommendations):
+        with cols[i]:
+            st.image("https://www.pngall.com/wp-content/uploads/15/Video-Game-Controller-PNG-Pic.png")
+            st.write(game)
