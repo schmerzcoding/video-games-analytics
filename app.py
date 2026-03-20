@@ -99,6 +99,7 @@ top_games = (
 )
 
 st.dataframe(top_games)
+st.markdown("---")
 
 # 🌍 Ventas por región
 st.header("Regional Sales Comparison")
